@@ -5,7 +5,6 @@ base theme: false
 package: 'Aeon'
 screenshot: screenshot.png
 core_version_requirement: ^8.8 || ^9
-version: 1.0.0
 
 stylesheets-remove:
   - system.theme.css
