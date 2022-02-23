@@ -441,10 +441,6 @@ class SubThemeCommands extends DrushCommands implements BuilderAwareInterface {
    *   The default destination.
    */
   protected function getDefaultDestination(): string {
-    if ($this->fs->exists('./themes/contrib')) {
-      return './themes/custom';
-    }
-
     return './themes';
   }
 
