@@ -16,7 +16,7 @@
     ],
     "includePaths": [
       "./bower_components/foundation-sites/scss",
-      "../../aeon/scss"
+      "../../contrib/aeon/scss"
     ]
   },
   "js": {

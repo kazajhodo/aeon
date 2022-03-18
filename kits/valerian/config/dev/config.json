@@ -14,7 +14,7 @@
       "scss/**/*.scss"
     ],
     "includePaths": [
-      "../aeon/scss"
+      "../contrib/aeon/scss"
     ]
   },
   "js": {
@@ -31,7 +31,7 @@
         "components/*/src/styles/*.scss"
       ],
       "includePaths": [
-        "../aeon/scss",
+        "../contrib/aeon/scss",
         "./scss/base"
       ]
     },
