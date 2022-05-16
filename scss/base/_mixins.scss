@@ -3,9 +3,9 @@
   @include aeon-normalize;
 
   // These styles are applied to a <meta> tag, which is read by the Foundation JavaScript
-  .foundation-mq {
-    font-family: '#{-aeon-bp-serialize($breakpoints)}';
-  }
+  // .foundation-mq {
+  //   font-family: '#{-aeon-bp-serialize($breakpoints)}';
+  // }
 
   html {
     box-sizing: border-box;

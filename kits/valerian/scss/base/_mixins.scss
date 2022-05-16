@@ -128,7 +128,7 @@
 }
 
 @mixin component-container() {
-  max-width: rem-calc(900);
+  max-width: $global-width;
   margin-left: auto;
   margin-right: auto;
 }
@@ -140,7 +140,41 @@
 }
 
 @mixin component-container-wide() {
-  max-width: rem-calc(1175);
+  max-width: rem-calc(1600);
   margin-left: auto;
   margin-right: auto;
+}
+
+// Fluid type.
+@function strip-unit($value) {
+  @return $value / ($value * 0 + 1);
+}
+
+@mixin fluid-type($min-font-size, $max-font-size, $min-vw: null, $max-vw: null, $property: font-size) {
+
+  @if ($min-vw == null) {
+    $min-vw: rem-calc(map-get($breakpoints, 'medium'));
+  }
+  @if ($max-vw == null) {
+    $max-vw: rem-calc(map-get($breakpoints, 'xlarge'));
+  }
+  $min-vw-unit: unit($min-vw);
+  $max-vw-unit: unit($max-vw);
+  $min-font-size-unit: unit($min-font-size);
+  $max-font-size-unit: unit($max-font-size);
+
+  @if $min-vw-unit == $max-vw-unit and $min-vw-unit == $min-font-size-unit and $min-vw-unit == $max-font-size-unit {
+
+    & {
+      #{$property}: $min-font-size;
+
+      @media screen and (min-width: $min-vw) {
+        #{$property}: calc(#{$min-font-size} + #{strip-unit($max-font-size - $min-font-size)} * ((100vw - #{$min-vw}) / #{strip-unit($max-vw - $min-vw)}));
+      }
+
+      @media screen and (min-width: $max-vw) {
+        #{$property}: $max-font-size;
+      }
+    }
+  }
 }

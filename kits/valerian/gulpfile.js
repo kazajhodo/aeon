@@ -14,17 +14,14 @@
  var execSync = require('child_process').execSync;
 
  // Include plugins.
- var sass = require('gulp-sass');
- var imagemin = require('gulp-imagemin');
- var pngcrush = require('imagemin-pngcrush');
+ var sass = require('gulp-sass')(require('sass'));
+ var glob = require('gulp-sass-glob');
  var plumber = require('gulp-plumber');
  var notify = require('gulp-notify');
  var autoprefix = require('gulp-autoprefixer');
- var glob = require('gulp-sass-glob');
  var rename = require('gulp-rename');
  var sourcemaps = require('gulp-sourcemaps');
  var breakpoints = require('aeon-breakpoints');
- var babel = require('gulp-babel');
  var uglify = require('gulp-uglify');
  var eslint = require('gulp-eslint');
  var gulpStylelint = require('gulp-stylelint');
@@ -65,9 +62,9 @@
        }
      }))
      .pipe(sourcemaps.init())
-     .pipe(sass({
+     .pipe(sass.sync({
        outputStyle: 'compressed',
-       errLogToConsole: true,
+      //  errLogToConsole: true,
        includePaths: config.css.includePaths
      }))
      .pipe(autoprefix('last 2 versions', '> 1%', 'ie 9', 'ie 10'))
@@ -78,42 +75,21 @@
          .src(config.css.src)
          .pipe(gulpStylelint({
            failAfterError: false,
-           // reportOutputDir: 'reports/lint',
            reporters: [
              // { formatter: 'verbose', console: true },
              { formatter: 'string', console: true },
              // { formatter: 'json', save: 'report.json' },
            ],
            debug: true
-         }));
+         }))
+         ;
      })
-     // .on('finish', function () {
-     //   gulp.src(config.css.src)
-     //     .pipe(sassLint({
-     //         configFile: 'config/dev/.sass-lint.yml'
-     //       }))
-     //     .pipe(sassLint.format());
-     // })
      .pipe(config.browserSync.enabled ? browserSync.reload({
        stream: true,
        // once: true,
        match: '**/*.css'
-     }) : gutil.noop());
- });
-
- // Stylelint.
- gulp.task('lint-css', function lintCssTask() {
-   return gulp
-     .src(config.css.src)
-     .pipe(gulpStylelint({
-       failAfterError: true,
-       // reportOutputDir: 'reports/lint',
-       reporters: [
-         { formatter: 'verbose', console: true },
-         { formatter: 'json', save: 'report.json' },
-       ],
-       debug: true
-     }));
+     }) : gutil.noop())
+     ;
  });
 
  // Javascript.
@@ -193,19 +169,6 @@
      }) : gutil.noop());
  });
 
- // Compress images.
- gulp.task('images', function () {
-   return gulp.src(config.images.src)
-     .pipe(imagemin({
-       progressive: true,
-       svgoPlugins: [{
-         removeViewBox: false
-       }],
-       use: [pngcrush()]
-     }))
-     .pipe(gulp.dest(config.images.dest));
- });
-
  // Calculate breakpoints.
  gulp.task('breakpoints', function () {
    gulp.src('./../ash.breakpoints.yml')
@@ -244,9 +207,6 @@
      }
    });
  });
-
- // Post install task.
- // gulp.task('postinstall', ['jsVendor']);
 
  // Default Task.
  gulp.task('default', ['serve']);

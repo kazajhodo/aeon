@@ -28,6 +28,7 @@ $body-background: color(theme-white);
 $body-font-color: color(theme-black);
 $anchor-color: color(theme-primary);
 $anchor-color-hover: scale-color($anchor-color, $lightness: -14%);
+$grid-margin-gutters: rem-calc(20);
 
 // Button
 // ----------
