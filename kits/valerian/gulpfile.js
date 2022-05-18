@@ -18,6 +18,7 @@
  var glob = require('gulp-sass-glob');
  var plumber = require('gulp-plumber');
  var notify = require('gulp-notify');
+ var cache = require('gulp-cached');
  var autoprefix = require('gulp-autoprefixer');
  var rename = require('gulp-rename');
  var sourcemaps = require('gulp-sourcemaps');
@@ -49,6 +50,7 @@
  // CSS.
  gulp.task('css', function () {
    return gulp.src(config.css.src)
+     .pipe(cache('css'))
      .pipe(glob())
      .pipe(plumber({
        errorHandler: function (error) {
@@ -113,6 +115,7 @@
  // Component CSS.
  gulp.task('componentCss', function () {
    return gulp.src(config.components.css.src)
+     .pipe(cache('componentCss'))
      .pipe(plumber())
      .pipe(sass({
        outputStyle: 'compressed',
