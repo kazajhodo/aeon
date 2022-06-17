@@ -50,8 +50,8 @@
  // CSS.
  gulp.task('css', function () {
    return gulp.src(config.css.src)
-     .pipe(cache('css'))
      .pipe(glob())
+     .pipe(cache('css'))
      .pipe(plumber({
        errorHandler: function (error) {
          notify.onError({
