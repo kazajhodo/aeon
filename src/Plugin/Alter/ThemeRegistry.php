@@ -74,11 +74,13 @@ class ThemeRegistry extends Registry implements AlterInterface {
         if (!isset($cache[$hook])) {
           $cache[$hook] = [];
         }
-        $cache[$hook]['path'] = $path;
-        $cache[$hook]['type'] = $current_theme ? 'theme' : 'base_theme';
-        $cache[$hook]['theme path'] = $theme_path;
-        if ($incomplete) {
-          $cache[$hook]['incomplete preprocess functions'] = TRUE;
+        if (!isset($cache[$hook]['strict'])) {
+          $cache[$hook]['path'] = $path;
+          $cache[$hook]['type'] = $current_theme ? 'theme' : 'base_theme';
+          $cache[$hook]['theme path'] = $theme_path;
+          if ($incomplete) {
+            $cache[$hook]['incomplete preprocess functions'] = TRUE;
+          }
         }
       }
     }
