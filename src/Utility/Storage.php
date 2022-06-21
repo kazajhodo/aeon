@@ -104,7 +104,7 @@ class Storage extends MemoryStorage implements \Iterator {
   /**
    * {@inheritdoc}
    */
-  public function current() {
+  public function current(): mixed {
     return current($this->data);
   }
 
@@ -160,6 +160,7 @@ class Storage extends MemoryStorage implements \Iterator {
   /**
    * {@inheritdoc}
    */
+  #[\ReturnTypeWillChange]
   public function key() {
     return key($this->data);
   }
@@ -167,6 +168,7 @@ class Storage extends MemoryStorage implements \Iterator {
   /**
    * {@inheritdoc}
    */
+  #[\ReturnTypeWillChange]
   public function next() {
     return next($this->data);
   }
@@ -182,6 +184,7 @@ class Storage extends MemoryStorage implements \Iterator {
   /**
    * {@inheritdoc}
    */
+  #[\ReturnTypeWillChange]
   public function rewind() {
     return reset($this->data);
   }
@@ -237,6 +240,7 @@ class Storage extends MemoryStorage implements \Iterator {
   /**
    * {@inheritdoc}
    */
+  #[\ReturnTypeWillChange]
   public function valid() {
     return key($this->data) !== NULL;
   }

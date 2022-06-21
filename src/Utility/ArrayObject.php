@@ -14,7 +14,7 @@ use Drupal\Core\Render\BubbleableMetadata;
  *
  * @ingroup utility
  */
-class ArrayObject implements \IteratorAggregate, \ArrayAccess, \Serializable, \Countable, AttachmentsInterface, RefinableCacheableDependencyInterface {
+class ArrayObject implements \IteratorAggregate, \ArrayAccess, \Countable, AttachmentsInterface, RefinableCacheableDependencyInterface {
 
   /**
    * The array.
@@ -166,6 +166,7 @@ class ArrayObject implements \IteratorAggregate, \ArrayAccess, \Serializable, \C
    * @return int
    *   The count.
    */
+  #[\ReturnTypeWillChange]
   public function count() {
     return count($this->array);
   }
@@ -238,6 +239,7 @@ class ArrayObject implements \IteratorAggregate, \ArrayAccess, \Serializable, \C
    * @return \ArrayIterator
    *   An array iterator.
    */
+  #[\ReturnTypeWillChange]
   public function getIterator() {
     return new \ArrayIterator($this->array);
   }
@@ -297,6 +299,7 @@ class ArrayObject implements \IteratorAggregate, \ArrayAccess, \Serializable, \C
    * @return bool
    *   TRUE or FALSE
    */
+  #[\ReturnTypeWillChange]
   public function offsetExists($key) {
     return isset($this->array[$key]);
   }
@@ -312,6 +315,7 @@ class ArrayObject implements \IteratorAggregate, \ArrayAccess, \Serializable, \C
    * @return mixed
    *   The value.
    */
+  #[\ReturnTypeWillChange]
   public function &offsetGet($key, $default = NULL) {
     if (!$this->offsetExists($key)) {
       $this->array[$key] = $default;
@@ -328,6 +332,7 @@ class ArrayObject implements \IteratorAggregate, \ArrayAccess, \Serializable, \C
    * @param mixed $value
    *   A value.
    */
+  #[\ReturnTypeWillChange]
   public function offsetSet($key, $value) {
     $this->array[$key] = $value;
   }
@@ -338,6 +343,7 @@ class ArrayObject implements \IteratorAggregate, \ArrayAccess, \Serializable, \C
    * @param mixed $key
    *   A key.
    */
+  #[\ReturnTypeWillChange]
   public function offsetUnset($key) {
     if ($this->offsetExists($key)) {
       unset($this->array[$key]);
@@ -350,7 +356,7 @@ class ArrayObject implements \IteratorAggregate, \ArrayAccess, \Serializable, \C
    * @return string
    *   The serialized value.
    */
-  public function serialize() {
+  public function __serialize() {
     return serialize(get_object_vars($this));
   }
 
