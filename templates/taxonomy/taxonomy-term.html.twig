@@ -20,13 +20,13 @@
     <{{ content_tag}}{{ content_attributes }}>
   {% endif %}
 
-  {% if not page and not title_hide and not title_after %}
+  {% if not page and not title_hide and not title_after and name %}
     {{ _self.term_title(name, title_tag, title_attributes, url, title_as_link, title_prefix, title_suffix) }}
   {% endif %}
 
   {{ content }}
 
-  {% if not page and not title_hide and title_after %}
+  {% if not page and not title_hide and title_after and name %}
     {{ _self.term_title(name, title_tag, title_attributes, url, title_as_link, title_prefix, title_suffix) }}
   {% endif %}
 
