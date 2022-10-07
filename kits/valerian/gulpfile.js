@@ -51,7 +51,6 @@
  gulp.task('css', function () {
    return gulp.src(config.css.src)
      .pipe(glob())
-     .pipe(cache('css'))
      .pipe(plumber({
        errorHandler: function (error) {
          notify.onError({
