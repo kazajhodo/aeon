@@ -1,1 +1,0 @@
-!function(n,t){"use strict";Drupal.behaviors.aeon_admin={attach:function(n){}}}(jQuery,document);

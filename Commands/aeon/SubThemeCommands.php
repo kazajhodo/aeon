@@ -89,7 +89,7 @@ class SubThemeCommands extends DrushCommands implements BuilderAwareInterface {
     $kit = $options['kit'];
 
     // @todo Use extension service.
-    $aeonDir = drupal_get_path('theme', 'aeon');
+    $aeonDir = \Drupal::service('extension.list.theme')->getPath('aeon');
     $srcDir = "$aeonDir/kits/{$kit}";
 
     // Find kit from other active themes.

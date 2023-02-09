@@ -63,7 +63,7 @@ class SettingBase extends PluginBase implements SettingInterface {
    * {@inheritdoc}
    */
   public function getDefaultValue() {
-    return isset($this->pluginDefinition['defaultValue']) ? $this->pluginDefinition['defaultValue'] : NULL;
+    return $this->pluginDefinition['defaultValue'] ?? NULL;
   }
 
   /**

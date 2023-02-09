@@ -1,6 +1,6 @@
-core_version_requirement: ^8.8 || ^9
 type: theme
 base theme: aeon
+core_version_requirement: '^9.3 || ^10'
 
 name: AEON_KIT_NAME
 description: AEON_KIT_DESCRIPTION

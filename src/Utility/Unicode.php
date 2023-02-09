@@ -67,10 +67,10 @@ class Unicode extends UtilityUnicode {
    *
    * @param string $string
    *   The string of text to check "simple" criteria on.
-   * @param int|FALSE $length
+   * @param int|false $length
    *   The length of characters used to determine whether or not $string is
    *   considered "simple". Set explicitly to FALSE to disable this criteria.
-   * @param array|FALSE $allowed_tags
+   * @param array|false $allowed_tags
    *   An array of allowed tag elements. Set explicitly to FALSE to disable this
    *   criteria.
    * @param bool $html

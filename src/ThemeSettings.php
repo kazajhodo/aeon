@@ -50,6 +50,7 @@ class ThemeSettings extends Config {
     }
 
     // Retrieve the global settings from configuration.
+    // phpcs:ignore
     $this->defaults = \Drupal::config('system.theme.global')->get();
 
     // Retrieve the theme setting plugin discovery defaults (code).
@@ -65,7 +66,10 @@ class ThemeSettings extends Config {
 
     // Iterate and merge all ancestor theme config into the defaults.
     foreach ($ancestry as $ancestor) {
-      $this->defaults = NestedArray::mergeDeepArray([$this->defaults, $this->getThemeConfig($ancestor)], TRUE);
+      $this->defaults = NestedArray::mergeDeepArray([
+        $this->defaults,
+        $this->getThemeConfig($ancestor),
+      ], TRUE);
     }
 
     // Merge the active theme config.
@@ -107,10 +111,16 @@ class ThemeSettings extends Config {
     if ($apply_overrides) {
       // Apply overrides.
       if (isset($this->moduleOverrides) && is_array($this->moduleOverrides)) {
-        $original_data = NestedArray::mergeDeepArray([$original_data, $this->moduleOverrides], TRUE);
+        $original_data = NestedArray::mergeDeepArray([
+          $original_data,
+          $this->moduleOverrides,
+        ], TRUE);
       }
       if (isset($this->settingsOverrides) && is_array($this->settingsOverrides)) {
-        $original_data = NestedArray::mergeDeepArray([$original_data, $this->settingsOverrides], TRUE);
+        $original_data = NestedArray::mergeDeepArray([
+          $original_data,
+          $this->settingsOverrides,
+        ], TRUE);
       }
     }
 
@@ -120,7 +130,7 @@ class ThemeSettings extends Config {
     else {
       $parts = explode('.', $key);
       if (count($parts) == 1) {
-        return isset($original_data[$key]) ? $original_data[$key] : NULL;
+        return $original_data[$key] ?? NULL;
       }
       else {
         $key_exists = FALSE;
@@ -171,9 +181,11 @@ class ThemeSettings extends Config {
     // Generate the path to the logo image.
     if (TRUE || $config->get('features.logo')) {
       $logo_url = FALSE;
+      /** @var \Drupal\Core\File\FileUrlGeneratorInterface $file_url_generator */
+      $file_url_generator = \Drupal::service('file_url_generator');
       foreach (['svg', 'png', 'jpg'] as $type) {
         if (file_exists($theme->getPath() . "/logo.$type")) {
-          $logo_url = file_create_url($theme->getPath() . "/logo.$type");
+          $logo_url = $file_url_generator->generateAbsoluteString($theme->getPath() . "/logo.$type");
           break;
         }
       }
@@ -181,7 +193,7 @@ class ThemeSettings extends Config {
         $config->set('logo.url', $logo_url);
       }
       elseif (($logo_path = $config->get('logo.path')) && file_exists($logo_path)) {
-        $config->set('logo.url', file_create_url($logo_path));
+        $config->set('logo.url', $file_url_generator->generateAbsoluteString($logo_path));
       }
     }
 
@@ -189,10 +201,10 @@ class ThemeSettings extends Config {
     if ($config->get('features.favicon')) {
       $favicon_url = $theme->getPath() . '/favicon.ico';
       if ($config->get('favicon.use_default') && file_exists($favicon_url)) {
-        $config->set('favicon.url', file_create_url($favicon_url));
+        $config->set('favicon.url', $file_url_generator->generateAbsoluteString($favicon_url));
       }
       elseif ($favicon_path = $config->get('favicon.path')) {
-        $config->set('favicon.url', file_create_url($favicon_path));
+        $config->set('favicon.url', $file_url_generator->generateAbsoluteString($favicon_path));
       }
     }
 
@@ -207,8 +219,8 @@ class ThemeSettings extends Config {
     // @todo Just rebuild the features section of the form?
     foreach (['favicon', 'features', 'logo'] as $key) {
       $arrays = [];
-      $arrays[] = isset($this->defaults[$key]) ? $this->defaults[$key] : [];
-      $arrays[] = isset($data[$key]) ? $data[$key] : [];
+      $arrays[] = $this->defaults[$key] ?? [];
+      $arrays[] = $data[$key] ?? [];
       $diff[$key] = NestedArray::mergeDeepArray($arrays, TRUE);
     }
 

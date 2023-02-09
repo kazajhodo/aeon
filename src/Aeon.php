@@ -84,17 +84,15 @@ class Aeon {
   /**
    * Iconizes a string using the iconify module.
    *
-   * @param string $name
+   * @param string $text
    *   The icon name, minus the "iconize-" prefix.
-   * @param array $default
-   *   (Optional) The default render array to use if $name is not available.
    *
    * @return array
    *   The render containing the icon defined by $name, $default value if
    *   icon does not exist or returns NULL if no icon could be rendered.
    */
-  public static function iconize($text, $icon = NULL) {
-    if (self::hasIcons()) {
+  public static function iconize($text) {
+    if (self::hasIcons() && function_exists('micon')) {
       $text = micon($text);
     }
     return $text;

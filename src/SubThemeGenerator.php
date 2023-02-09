@@ -188,9 +188,9 @@ class SubThemeGenerator {
    */
   protected function initMachineNameOld() {
     $dstDir = $this->getDir();
-    $infoFiles = glob("$dstDir/*.info.yml");
+    $infoFiles = glob("$dstDir/*.info.aeon.yml");
 
-    $this->machineNameOld = basename(reset($infoFiles), '.info.yml');
+    $this->machineNameOld = basename(reset($infoFiles), '.info.aeon.yml');
 
     return $this;
   }
@@ -221,7 +221,11 @@ class SubThemeGenerator {
     }
 
     foreach ($this->getFileNamesToRename() as $fileName) {
-      $this->fs->rename($fileName, str_replace($this->machineNameOld, $machineNameNew, $fileName));
+      $newFileName = str_replace($this->machineNameOld, $machineNameNew, $fileName);
+      if (strpos($newFileName, '.aeon.') !== FALSE) {
+        $newFileName = str_replace('.aeon.', '.', $newFileName);
+      }
+      $this->fs->rename($fileName, $newFileName);
     }
 
     return $this;

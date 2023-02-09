@@ -132,7 +132,7 @@ class Theme {
     $this->theme = $theme;
     $this->themeHandler = $theme_handler;
     $this->themes = $this->themeHandler->listInfo();
-    $this->info = isset($this->themes[$this->name]->info) ? $this->themes[$this->name]->info : [];
+    $this->info = $this->themes[$this->name]->info ?? [];
     $this->aeon = $this->subthemeOf('aeon');
 
     // Only install the theme if it's Aeon based and there are no schemas
@@ -260,7 +260,12 @@ class Theme {
         $ignore_directories += ['docs', 'documentation'];
       }
       if ($flags & self::IGNORE_DEV) {
-        $ignore_directories += ['bower_components', 'grunt', 'node_modules', 'starterkits'];
+        $ignore_directories += [
+          'bower_components',
+          'grunt',
+          'node_modules',
+          'kits',
+        ];
       }
       if ($flags & self::IGNORE_TEMPLATES) {
         $ignore_directories += ['templates', 'theme'];
@@ -333,7 +338,7 @@ class Theme {
       $storage = self::getStorage();
       $value = $storage->get($name);
       if (!isset($value)) {
-        $value  = is_array($default) ? new StorageItem($default, $storage) : $default;
+        $value = is_array($default) ? new StorageItem($default, $storage) : $default;
         $storage->set($name, $value);
       }
       $cache[$name] = $value;
@@ -353,7 +358,7 @@ class Theme {
    */
   public function getInfo($property = NULL) {
     if (isset($property)) {
-      return isset($this->info[$property]) ? $this->info[$property] : NULL;
+      return $this->info[$property] ?? NULL;
     }
     return $this->info;
   }
@@ -500,24 +505,11 @@ class Theme {
 
     // Return a specific setting plugin.
     if (isset($name)) {
-      return isset($settings[$name]) ? $settings[$name] : NULL;
+      return $settings[$name] ?? NULL;
     }
 
     // Return all setting plugins.
     return $settings;
-  }
-
-  /**
-   * Retrieves the theme's setting plugin instances.
-   *
-   * @return \Drupal\aeon\Plugin\Setting\SettingInterface[]
-   *   An associative array of setting objects, keyed by their name.
-   *
-   * @deprecated Will be removed in a future release. Use \Drupal\aeon\Theme::getSettingPlugin instead.
-   */
-  public function getSettingPlugins() {
-    Aeon::deprecated();
-    return $this->getSettingPlugin();
   }
 
   /**
@@ -584,7 +576,7 @@ class Theme {
     if (!isset($includes[$include])) {
       $includes[$include] = !!@include_once $include;
       if (!$includes[$include]) {
-        drupal_set_message(t('Could not include file: @include', ['@include' => $include]), 'error');
+        \Drupal::messenger()->addError(t('Could not include file: @include', ['@include' => $include]));
       }
     }
     return $includes[$include];

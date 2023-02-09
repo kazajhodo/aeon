@@ -13,4 +13,8 @@ Go to the `root` folder of AEON_KIT_NAME theme and run the following commands: `
 Update `browserSync.proxy` in **/config/dev/config.local.json**.
 
 #### Step 5
-Run the following command to compile Sass and watch for changes: `gulp`.
+Run the following command to compile Sass and watch for changes:
+- Single compile: `gulp`
+- Watch compile: `gulp watch`
+- Single compile in DDEV (outside DDEV container): `gulp ddev`
+- Watch compile in DDEV (outside DDEV container): `gulp ddevWatch`

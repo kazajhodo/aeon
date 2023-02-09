@@ -2,7 +2,6 @@
   "name": "aeon_kit",
   "description": "AEON_KIT_DESCRIPTION",
   "browserSync": {
-    "enabled" : true,
     "proxy" : "http://localhost",
     "port" : 3000,
     "openAutomatically" : false,
@@ -28,7 +27,8 @@
     "css": {
       "dest": "./components",
       "src": [
-        "components/*/src/styles/*.scss"
+        "components/*/src/styles/*.scss",
+        "scss/base/*.scss"
       ],
       "includePaths": [
         "../contrib/aeon/scss",
@@ -44,18 +44,8 @@
   },
   "templates": {
     "src": [
-      "templates/**/*.twig"
+      "templates/**/*.twig",
+      "components/*/*.twig"
     ]
-  },
-  "drush": {
-    "src": [
-      "src/Plugin/Preprocess/*.php"
-    ]
-  },
-  "images": {
-    "src": [
-      "assets/images/**/*"
-    ],
-    "dest": "assets/images/"
   }
 }

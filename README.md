@@ -12,7 +12,7 @@ drush dl aeon
 drush en aeon -y
 drush config-set system.theme default aeon -y
 ```
-**Drupal 9**
+**Drupal 9 & 10**
 ```bash
 drush dl aeon
 drush theme:enable aeon -y

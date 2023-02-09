@@ -1,7 +1,0 @@
-.section.page {
-  @include grid-row;
-
-  > * {
-    @include grid-column;
-  }
-}

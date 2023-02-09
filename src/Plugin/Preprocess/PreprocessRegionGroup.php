@@ -78,8 +78,8 @@ class PreprocessRegionGroup {
     if (is_a($this->variables['content'], '\Drupal\Core\Render\Markup')) {
       $this->variables['content'] = [];
       foreach (Element::children($this->element) as $id) {
-        $this->variables['content'][$id]['#markup'] = isset($this->element[$id]['#markup']) ? $this->element[$id]['#markup'] : '';
-        $this->variables['content'][$id]['#cache'] = isset($this->element[$id]['#cache']) ? $this->element[$id]['#cache'] : '';
+        $this->variables['content'][$id]['#markup'] = $this->element[$id]['#markup'] ?? '';
+        $this->variables['content'][$id]['#cache'] = $this->element[$id]['#cache'] ?? '';
       }
     }
     $this->attributes = new Attribute($attributes);

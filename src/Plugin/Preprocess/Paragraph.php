@@ -2,7 +2,6 @@
 
 namespace Drupal\aeon\Plugin\Preprocess;
 
-use Drupal\aeon\Utility\Variables;
 use Drupal\Core\Url;
 
 /**

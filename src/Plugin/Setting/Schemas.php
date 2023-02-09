@@ -130,7 +130,7 @@ class Schemas extends SettingBase {
     $theme = Aeon::getTheme($theme_name);
 
     // Reconstruct the update plugin that is being applied.
-    list($provider, $plugin_id) = explode(':', $update_id);
+    [$provider, $plugin_id] = explode(':', $update_id);
     $provider = Aeon::getTheme($provider);
 
     /** @type \Drupal\aeon\Plugin\Update\UpdateInterface $update */

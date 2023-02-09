@@ -42,12 +42,14 @@ class ThemeRegistry extends Registry implements AlterInterface {
     }
     $this->currentTheme = $configuration['theme'];
     parent::__construct(
-      \Drupal::service('app.root'),
+      \Drupal::root(),
       \Drupal::service('cache.default'),
       \Drupal::service('lock'),
       \Drupal::service('module_handler'),
       \Drupal::service('theme_handler'),
       \Drupal::service('theme.initialization'),
+      \Drupal::service('cache.bootstrap'),
+      \Drupal::service('extension.list.module'),
       $this->currentTheme->getName()
     );
     $this->setThemeManager(\Drupal::service('theme.manager'));
