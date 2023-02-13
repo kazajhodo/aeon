@@ -14,16 +14,16 @@ const uglify = require('gulp-uglify');
 const eslint = require('gulp-eslint');
 const babel = require('gulp-babel');
 let config = require('./config/dev/config.json');
-let ddevStatus = FALSE;
-let watchStatus = FALSE;
+let ddevStatus = false;
+let watchStatus = false;
 let drupalInfo;
-let url = process.env.DDEV_HOSTNAME || NULL;
+let url = process.env.DDEV_HOSTNAME || null;
 let drushCommand = 'drush';
 
 // If config.js exists, load that config for overriding certain values below.
 function loadConfig() {
   if (fs.existsSync('./config/dev/config.local.json')) {
-    config = extend(TRUE, config, require('./config/dev/config.local'));
+    config = extend(true, config, require('./config/dev/config.local'));
   }
   return config;
 }
@@ -130,12 +130,12 @@ function clearCache(cb) {
 
 function enableDdev(cb) {
   drushCommand = 'ddev drush';
-  ddevStatus = TRUE;
+  ddevStatus = true;
   cb();
 }
 
 function enableWatch(cb) {
-  watchStatus = TRUE;
+  watchStatus = true;
   cb();
 }
 
