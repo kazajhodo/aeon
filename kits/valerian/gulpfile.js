@@ -19,6 +19,7 @@ let watchStatus = false;
 let drupalInfo;
 let url = process.env.DDEV_HOSTNAME || null;
 let drushCommand = 'drush';
+let gulpStylelint = require('gulp-stylelint');
 
 // If config.js exists, load that config for overriding certain values below.
 function loadConfig() {
@@ -78,7 +79,21 @@ function css(cb) {
     }))
     .pipe(sourcemaps.write('./'))
     .pipe(gulp.dest(config.css.dest))
-    .pipe(watchStatus ? browserSync.stream() : noop());
+    .pipe(watchStatus ? browserSync.stream() : noop())
+    .on('finish', function lintCssTask() {
+      return gulp
+        .src(config.css.src)
+        .pipe(gulpStylelint({
+          failAfterError: false,
+          reporters: [
+            // { formatter: 'verbose', console: true },
+            { formatter: 'string', console: true },
+            // { formatter: 'json', save: 'report.json' },
+          ],
+          debug: true
+        }))
+        ;
+    });
   cb();
 }
 
@@ -97,8 +112,21 @@ function componentJs(cb) {
       path.dirname = path.dirname.replace('src/scripts', '');
     }))
     .pipe(gulp.dest(config.components.js.dest))
-    .pipe(watchStatus ? browserSync.stream() : noop());
-
+    .pipe(watchStatus ? browserSync.stream() : noop())
+    .on('finish', function lintCssTask() {
+      return gulp
+        .src(config.css.src)
+        .pipe(gulpStylelint({
+          failAfterError: false,
+          reporters: [
+            // { formatter: 'verbose', console: true },
+            { formatter: 'string', console: true },
+            // { formatter: 'json', save: 'report.json' },
+          ],
+          debug: true
+        }))
+        ;
+    });
   cb();
 }
 
