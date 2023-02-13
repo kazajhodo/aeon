@@ -22,15 +22,15 @@
  * @see template_preprocess_input()
  */
 #}
-{% spaceless %}
-  {%
-    set classes = [
-      'button',
-      type == 'submit' ? 'js-form-submit',
-    ]
-  %}
-  {% block input %}
+{%
+  set classes = [
+    'button',
+    type == 'submit' ? 'js-form-submit',
+  ]
+%}
+{% block input %}
+  {% apply spaceless %}
     <button{{ attributes.addClass(classes) }}>{{ icon }}{{ label }}</button>
     {{ children }}
-  {% endblock %}
-{% endspaceless %}
+  {% endapply %}
+{% endblock %}

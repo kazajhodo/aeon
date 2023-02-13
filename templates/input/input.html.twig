@@ -13,9 +13,9 @@
  * @ingroup themeable
  */
 #}
-{% spaceless %}
+{% apply spaceless %}
   {% block input %}
     <input{{ attributes }} />
   {% endblock %}
   {{ children }}
-{% endspaceless %}
+{% endapply %}
