@@ -52,7 +52,7 @@ function js(cb) {
   gulp.src(config.js.src)
     .pipe(eslint({
       configFile: 'config/dev/.eslintrc',
-      useEslintrc: FALSE
+      useEslintrc: false
     }))
     .pipe(eslint.format())
     .pipe(babel({
@@ -75,7 +75,7 @@ function css(cb) {
     }).on('error', sass.logError))
     .pipe(autoprefixer({
       browserlist: ['last 2 versions'],
-      cascade: FALSE
+      cascade: false
     }))
     .pipe(sourcemaps.write('./'))
     .pipe(gulp.dest(config.css.dest))
@@ -101,7 +101,7 @@ function componentJs(cb) {
   gulp.src(config.components.js.src)
     .pipe(eslint({
       configFile: 'config/dev/.eslintrc',
-      useEslintrc: FALSE
+      useEslintrc: false
     }))
     .pipe(eslint.format())
     .pipe(babel({
@@ -140,7 +140,7 @@ function componentCss(cb) {
     }).on('error', sass.logError))
     .pipe(autoprefixer({
       browserlist: ['last 2 versions'],
-      cascade: FALSE
+      cascade: false
     }))
     .pipe(rename(function (path) {
       path.dirname = path.dirname.replace('src/styles', '');
