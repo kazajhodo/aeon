@@ -41,17 +41,32 @@ class ThemeRegistry extends Registry implements AlterInterface {
       $configuration['theme'] = Aeon::getTheme();
     }
     $this->currentTheme = $configuration['theme'];
-    parent::__construct(
-      \Drupal::root(),
-      \Drupal::service('cache.default'),
-      \Drupal::service('lock'),
-      \Drupal::service('module_handler'),
-      \Drupal::service('theme_handler'),
-      \Drupal::service('theme.initialization'),
-      \Drupal::service('cache.bootstrap'),
-      \Drupal::service('extension.list.module'),
-      $this->currentTheme->getName()
-    );
+    if (version_compare(\Drupal::VERSION, '10', '<')) {
+      parent::__construct(
+        \Drupal::root(),
+        \Drupal::service('cache.default'),
+        \Drupal::service('lock'),
+        \Drupal::service('module_handler'),
+        \Drupal::service('theme_handler'),
+        \Drupal::service('theme.initialization'),
+        $this->currentTheme->getName(),
+        \Drupal::service('cache.bootstrap'),
+        \Drupal::service('extension.list.module')
+      );
+    }
+    else {
+      parent::__construct(
+        \Drupal::root(),
+        \Drupal::service('cache.default'),
+        \Drupal::service('lock'),
+        \Drupal::service('module_handler'),
+        \Drupal::service('theme_handler'),
+        \Drupal::service('theme.initialization'),
+        \Drupal::service('cache.bootstrap'),
+        \Drupal::service('extension.list.module'),
+        $this->currentTheme->getName()
+      );
+    }
     $this->setThemeManager(\Drupal::service('theme.manager'));
     $this->init();
   }
