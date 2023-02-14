@@ -86,14 +86,13 @@ function css(cb) {
         .pipe(gulpStylelint({
           failAfterError: false,
           reporters: [
-            // { formatter: 'verbose', console: true },
             { formatter: 'string', console: true },
-            // { formatter: 'json', save: 'report.json' },
           ],
           debug: true
         }))
         ;
     });
+    ;
   cb();
 }
 
@@ -112,21 +111,7 @@ function componentJs(cb) {
       path.dirname = path.dirname.replace('src/scripts', '');
     }))
     .pipe(gulp.dest(config.components.js.dest))
-    .pipe(watchStatus ? browserSync.stream() : noop())
-    .on('finish', function lintCssTask() {
-      return gulp
-        .src(config.css.src)
-        .pipe(gulpStylelint({
-          failAfterError: false,
-          reporters: [
-            // { formatter: 'verbose', console: true },
-            { formatter: 'string', console: true },
-            // { formatter: 'json', save: 'report.json' },
-          ],
-          debug: true
-        }))
-        ;
-    });
+    .pipe(watchStatus ? browserSync.stream() : noop());
   cb();
 }
 
@@ -147,7 +132,20 @@ function componentCss(cb) {
     }))
     .pipe(sourcemaps.write('./'))
     .pipe(gulp.dest(config.components.css.dest))
-    .pipe(watchStatus ? browserSync.stream() : noop());
+    .pipe(watchStatus ? browserSync.stream() : noop())
+    .on('finish', function lintCssTask() {
+      return gulp
+        .src(config.components.css.src)
+        .pipe(gulpStylelint({
+          failAfterError: false,
+          reporters: [
+            { formatter: 'string', console: true },
+          ],
+          debug: true
+        }))
+        ;
+    });
+    ;
   cb();
 }
 
@@ -157,6 +155,14 @@ function clearCache(cb) {
 }
 
 function enableDdev(cb) {
+  const ddevConfig = JSON.parse(execSync('ddev describe -j 2>/dev/null').toString());
+  if (typeof ddevConfig.raw.status !== 'undefined' && ddevConfig.raw.status === 'running' && typeof ddevConfig.raw.httpurl !== 'undefined') {
+    config.browserSync.proxy = ddevConfig.raw.primary_url;
+    url = ddevConfig.raw.hostname;
+  }
+  else {
+    throw new Error('DDEV not running. Try running "ddev start".');
+  }
   drushCommand = 'ddev drush';
   ddevStatus = true;
   cb();
@@ -170,11 +176,12 @@ function enableWatch(cb) {
 function watch(cb) {
   if (watchStatus) {
     browserSync.init({
+      ui: false,
       proxy: config.browserSync.proxy,
       port: config.browserSync.port,
       open: config.browserSync.openAutomatically,
       notify: config.browserSync.notify,
-      host: url,
+      listen: url,
     });
     gulp.watch(config.css.src, css);
     gulp.watch(config.js.src, js);
