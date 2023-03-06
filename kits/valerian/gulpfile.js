@@ -1,6 +1,9 @@
 const gulp = require('gulp');
 const { parallel, series } = require('gulp');
 const noop = require('gulp-noop');
+const gutil = require('gulp-util');
+const cache = require('gulp-cached');
+const plumber = require('gulp-plumber');
 const fs = require('fs');
 const extend = require('extend');
 const rename = require('gulp-rename');
@@ -13,13 +16,61 @@ const sourcemaps = require('gulp-sourcemaps');
 const uglify = require('gulp-uglify');
 const eslint = require('gulp-eslint');
 const babel = require('gulp-babel');
-let config = require('./config/dev/config.json');
 let ddevStatus = false;
 let watchStatus = false;
 let drupalInfo;
 let url = process.env.DDEV_HOSTNAME || null;
 let drushCommand = 'drush';
+let root = gutil.env.root;
 let gulpStylelint = require('gulp-stylelint');
+let config = {
+  browserSync: {
+    proxy: 'http://localhost',
+    port: 3000,
+    openAutomatically: false,
+    notify: false
+  },
+  css: {
+    dest: 'assets/css',
+    src: [
+      'scss/**/*.scss'
+    ],
+    includePaths: [
+      '../contrib/aeon/scss'
+    ]
+  },
+  js: {
+    dest: 'assets/js',
+    src: [
+      'js/**/*.js'
+    ]
+  },
+  components: {
+    css: {
+      dest: './components',
+      src: [
+        'components/*/src/styles/*.scss',
+        'scss/base/*.scss'
+      ],
+      includePaths: [
+        '../contrib/aeon/scss',
+        './scss/base'
+      ]
+    },
+    js: {
+      dest: './components',
+      src: [
+        'components/*/src/scripts/*.js'
+      ]
+    }
+  },
+  templates: {
+    src: [
+      'templates/**/*.twig',
+      'components/*/*.twig'
+    ]
+  }
+};
 
 // If config.js exists, load that config for overriding certain values below.
 function loadConfig() {
@@ -31,25 +82,31 @@ function loadConfig() {
 loadConfig();
 
 function drupal(cb) {
-  drupalInfo = JSON.parse(execSync(drushCommand + ' status --format=json').toString());
+  let command = drushCommand + ' status --format=json';
+  if (root) {
+    command += ' --root="' + root + '"';
+  }
+  drupalInfo = JSON.parse(execSync(command).toString());
   cb();
 }
 
 function exo(cb) {
   const root = process.env.DDEV_EXTERNAL_ROOT || drupalInfo['root'];
+  let command = drushCommand + ' exo-scss';
   if (ddevStatus) {
-    execSync('ddev exec "export DDEV_EXTERNAL_ROOT=' + root + ' && drush exo-scss"');
+    command = 'ddev exec "export DDEV_EXTERNAL_ROOT=' + root + ' && drush exo-scss"';
   }
-  else {
-    execSync(drushCommand + ' exo-scss');
+  else if (root) {
+    command += ' --root="' + root + '"';
   }
+  execSync(command);
   config.css.includePaths.push(root + '/' + drupalInfo['site'] + '/files/exo');
   config.components.css.includePaths.push(root + '/' + drupalInfo['site'] + '/files/exo');
   cb();
 }
 
 function js(cb) {
-  gulp.src(config.js.src)
+  return gulp.src(config.js.src)
     .pipe(eslint({
       configFile: 'config/dev/.eslintrc',
       useEslintrc: false
@@ -61,12 +118,11 @@ function js(cb) {
     .pipe(uglify())
     .pipe(gulp.dest(config.js.dest))
     .pipe(watchStatus ? browserSync.stream() : noop());
-
-  cb();
 }
 
 function css(cb) {
-  gulp.src(config.css.src)
+  delete cache.caches['componentCss'];
+  return gulp.src(config.css.src)
     .pipe(glob())
     .pipe(sourcemaps.init())
     .pipe(sass({
@@ -80,7 +136,7 @@ function css(cb) {
     .pipe(sourcemaps.write('./'))
     .pipe(gulp.dest(config.css.dest))
     .pipe(watchStatus ? browserSync.stream() : noop())
-    .on('finish', function lintCssTask() {
+    .on('finish', function () {
       return gulp
         .src(config.css.src)
         .pipe(gulpStylelint({
@@ -92,12 +148,10 @@ function css(cb) {
         }))
         ;
     });
-    ;
-  cb();
 }
 
 function componentJs(cb) {
-  gulp.src(config.components.js.src)
+  return gulp.src(config.components.js.src)
     .pipe(eslint({
       configFile: 'config/dev/.eslintrc',
       useEslintrc: false
@@ -112,12 +166,12 @@ function componentJs(cb) {
     }))
     .pipe(gulp.dest(config.components.js.dest))
     .pipe(watchStatus ? browserSync.stream() : noop());
-  cb();
 }
 
 function componentCss(cb) {
-  gulp.src(config.components.css.src)
+  return gulp.src(config.components.css.src)
     .pipe(glob())
+    .pipe(cache('componentCss'))
     .pipe(sourcemaps.init())
     .pipe(sass({
       outputStyle: 'compressed',
@@ -133,7 +187,7 @@ function componentCss(cb) {
     .pipe(sourcemaps.write('./'))
     .pipe(gulp.dest(config.components.css.dest))
     .pipe(watchStatus ? browserSync.stream() : noop())
-    .on('finish', function lintCssTask() {
+    .on('finish', function () {
       return gulp
         .src(config.components.css.src)
         .pipe(gulpStylelint({
@@ -145,8 +199,6 @@ function componentCss(cb) {
         }))
         ;
     });
-    ;
-  cb();
 }
 
 function clearCache(cb) {
