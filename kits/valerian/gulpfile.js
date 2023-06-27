@@ -5,6 +5,7 @@ const gutil = require('gulp-util');
 const cache = require('gulp-cached');
 const plumber = require('gulp-plumber');
 const fs = require('fs');
+const path = require('path');
 const extend = require('extend');
 const rename = require('gulp-rename');
 const execSync = require('child_process').execSync;
