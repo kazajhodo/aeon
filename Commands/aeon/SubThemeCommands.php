@@ -7,7 +7,6 @@ namespace Drush\Commands\aeon;
 use Consolidation\AnnotatedCommand\CommandData;
 use Consolidation\AnnotatedCommand\CommandError;
 use Drupal\Component\Utility\UrlHelper;
-use Drupal\aeon\SubThemeGenerator;
 use Drush\Commands\DrushCommands;
 use Robo\Contract\BuilderAwareInterface;
 use Robo\State\Data as RoboStateData;

@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace Drupal\aeon;
+namespace Drush\Commands\aeon;
 
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
