@@ -17,8 +17,6 @@ regions:
   status: 'Status messages'
   content: Content
   footer: Footer
-  sidebar_first: 'Sidebar first'
-  sidebar_second: 'Sidebar second'
 
 libraries:
   - aeon_kit/base

@@ -85,50 +85,98 @@
 
 // Buttons - Base button styling is handled in the %button placeholder.
 // --------
-@mixin component-button {
+@mixin component-button($background: null, $color: null, $border: null, $background-hover: null, $color-hover: null, $border-hover: null) {
   @extend %button;
+  @if (($background != null) or ($color != null) or ($border != null) or ($background-hover != null) or ($color-hover != null) or ($border-hover != null)) {
+    @if (($background != null) or ($color != null)) {
+
+      &,
+      &:visited,
+      &:active,
+      &:focus {
+        @if ($background != null) {
+          @if ($background == transparent) {
+            background-color: $background;
+          }
+          @else {
+            background-color: color($background);
+          }
+        }
+        @if ($color != null) {
+          color: color($color);
+        }
+        @if ($border != null) {
+          outline: 2px solid color($border);
+        }
+      }
+    }
+    @if (($background-hover != null) or ($color-hover != null)) {
+
+      &:hover {
+        @if ($background-hover != null) {
+          @if ($background-hover == transparent) {
+            background-color: $background;
+          }
+          @else {
+            background-color: color($background-hover);
+          }
+        }
+        @if ($color-hover != null) {
+          color: color($color-hover);
+        }
+        @if ($border-hover != null) {
+          outline-color: color($border-hover);
+        }
+      }
+    }
+  }
+  @content;
+}
+
+@mixin component-button-primary {
+  @include component-button;
+  @content;
+}
+
+@mixin component-button-primary-outline() {
+  @include component-button(transparent, theme-primary, theme-primary, theme-primary, theme-white, theme-primary);
+  @content;
+}
+
+@mixin component-button-secondary {
+  @include component-button(theme-secondary, theme-white, theme-primary, theme-white);
+  @content;
+}
+
+@mixin component-button-secondary-outline() {
+  @include component-button(transparent, theme-secondary, theme-secondary, theme-secondary, theme-white, theme-secondary);
+  @content;
+}
+
+@mixin component-button-white {
+  @include component-button(theme-white, theme-primary, theme-white, theme-primary);
+  @content;
+}
+
+@mixin component-button-white-outline() {
+  @include component-button(transparent, theme-white, theme-white, theme-white, theme-primary, theme-white);
+  @content;
+}
+
+@mixin component-button-small {
+  @include fluid-type(rem-calc(11), rem-calc(13));
+  padding: ($global-padding * 0.5) ($global-padding);
   @content;
 }
 
 @mixin component-button-large {
-  @extend %button;
-  font-size: rem-calc(20);
-  padding: ($global-padding * 1.25) ($global-padding * 3.25);
-
+  @include fluid-type(rem-calc(20), rem-calc(22));
+  padding: ($global-padding) ($global-padding * 1.5);
   @content;
 }
 
-@mixin component-button-reverse {
-  @extend %button;
-  background: color(theme-secondary);
-
-  &:hover {
-    background: color(theme-primary);
-  }
-
-  @content;
-}
-
-@mixin component-button-alt {
-  @extend %button;
-  background: transparent;
-  color: color(theme-primary);
-  box-shadow: none;
-
-  &:visited,
-  &:active,
-  &:focus {
-    color: color(theme-primary);
-  }
-
-  &:hover {
-    background: transparent;
-    color: color(theme-secondary);
-  }
-
-  @content;
-}
-
+// Containers
+// --------
 @mixin component-container() {
   max-width: $global-width;
   margin-left: auto;

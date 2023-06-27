@@ -1,0 +1,23 @@
+.exo-modifier--containment-wide {
+  @include component-container-wide;
+}
+
+.exo-modifier--containment-normal {
+  @include component-container;
+}
+
+.exo-modifier--containment-narrow {
+  @include component-container-inset;
+}
+
+.exo-modifier--containment-content-wide .exo-component-content {
+  @include component-container-wide;
+}
+
+.exo-modifier--containment-content-normal .exo-component-content {
+  @include component-container;
+}
+
+.exo-modifier--containment-content-narrow .exo-component-content {
+  @include component-container-inset;
+}

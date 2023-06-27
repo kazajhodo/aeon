@@ -23,54 +23,7 @@ let url = process.env.DDEV_HOSTNAME || null;
 let drushCommand = 'drush';
 let root = gutil.env.root;
 let gulpStylelint = require('gulp-stylelint');
-let config = {
-  browserSync: {
-    proxy: 'http://localhost',
-    port: 3000,
-    openAutomatically: false,
-    notify: false
-  },
-  css: {
-    dest: 'assets/css',
-    src: [
-      'scss/**/*.scss'
-    ],
-    includePaths: [
-      '../contrib/aeon/scss'
-    ]
-  },
-  js: {
-    dest: 'assets/js',
-    src: [
-      'js/**/*.js'
-    ]
-  },
-  components: {
-    css: {
-      dest: './components',
-      src: [
-        'components/*/src/styles/*.scss',
-        'scss/base/*.scss'
-      ],
-      includePaths: [
-        '../contrib/aeon/scss',
-        './scss/base'
-      ]
-    },
-    js: {
-      dest: './components',
-      src: [
-        'components/*/src/scripts/*.js'
-      ]
-    }
-  },
-  templates: {
-    src: [
-      'templates/**/*.twig',
-      'components/*/*.twig'
-    ]
-  }
-};
+let config = require('./config/dev/config');
 
 // If config.js exists, load that config for overriding certain values below.
 function loadConfig() {
