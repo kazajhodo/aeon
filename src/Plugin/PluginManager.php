@@ -100,7 +100,10 @@ class PluginManager extends DefaultPluginManager {
   public function getDefinitions($sorted = TRUE) {
     $definitions = parent::getDefinitions();
     if ($sorted) {
-      uasort($definitions, ['\Drupal\Component\Utility\SortArray', 'sortByWeightElement']);
+      uasort($definitions, [
+        '\Drupal\Component\Utility\SortArray',
+        'sortByWeightElement',
+      ]);
     }
     return $definitions;
   }
