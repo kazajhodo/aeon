@@ -108,6 +108,9 @@
         @if ($border != null) {
           outline: 2px solid color($border);
         }
+        @else {
+          outline: 0;
+        }
       }
     }
     @if (($background-hover != null) or ($color-hover != null)) {
@@ -134,7 +137,7 @@
 }
 
 @mixin component-button-primary {
-  @include component-button;
+  @include component-button(theme-primary, theme-white, null, theme-secondary, theme-white);
   @content;
 }
 
@@ -144,7 +147,7 @@
 }
 
 @mixin component-button-secondary {
-  @include component-button(theme-secondary, theme-white, theme-primary, theme-white);
+  @include component-button(theme-secondary, theme-white, null, theme-primary, theme-white);
   @content;
 }
 
@@ -154,7 +157,7 @@
 }
 
 @mixin component-button-white {
-  @include component-button(theme-white, theme-primary, theme-white, theme-primary);
+  @include component-button(theme-white, theme-primary, null, theme-primary, theme-white);
   @content;
 }
 
@@ -193,6 +196,21 @@
   max-width: rem-calc(1600);
   margin-left: auto;
   margin-right: auto;
+}
+
+// Utilities
+// --------
+
+@mixin component-on-dark-bg($prefix: 'color-bg') {
+  .exo-modifier--#{$prefix}-dark & {
+    @content;
+  }
+}
+
+@mixin component-on-light-bg($prefix: 'color-bg') {
+  .exo-modifier--#{$prefix}-light & {
+    @content;
+  }
 }
 
 // Fluid type.

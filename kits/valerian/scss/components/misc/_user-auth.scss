@@ -1,4 +1,3 @@
-
 .page.login {
   padding: $global-padding;
   position: relative;
@@ -32,9 +31,9 @@
         @include exo-flex-direction(column);
         padding: 0 ($global-padding);
 
-        .exo-form-element {
+        > .exo-form-element {
           margin-top: $global-margin;
-          margin-bottom: $global-margin * 0.5;
+          margin-bottom: 0;
         }
       }
     }
@@ -51,14 +50,16 @@
     margin: $global-margin auto;
   }
 
+  .breadcrumb {
+    display: none;
+  }
+
   .form-actions {
-    display: block;
-    width: 100%;
-    margin-top: $global-margin;
+    @include flex;
+    @include flex-align(center, middle);
 
     .button {
       @include component-button;
-      width: 100%;
     }
   }
 }

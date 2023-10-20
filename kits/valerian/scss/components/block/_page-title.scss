@@ -1,12 +1,6 @@
 
 .block.page.title {
-  @include exo-grid-container;
-  @include exo-grid;
+  @include component-container;
   @include component-spacing;
-
-  h1 {
-    @include exo-cell;
-    color: color(theme-black);
-    display: block;
-  }
+  padding: 0 $global-padding;
 }
