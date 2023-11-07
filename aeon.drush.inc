@@ -96,7 +96,7 @@ function drush_aeon_create($name, $machine_name, $description, $subtheme_path, $
   $subtheme_path = drush_normalize_path(drush_get_context('DRUSH_DRUPAL_ROOT') . '/' . $subtheme_path . '/' . $machine_name);
 
   // Make a fresh copy of the kit.
-  $kit_path = drush_normalize_path(drush_get_context('DRUSH_DRUPAL_ROOT') . '/' . drupal_get_path('theme', 'aeon') . '/kits/' . $kit);
+  $kit_path = drush_normalize_path(drush_get_context('DRUSH_DRUPAL_ROOT') . '/' . \Drupal::service('extension.list.theme')->getPath('aeon') . '/kits/' . $kit);
 
   if (!is_dir(dirname($subtheme_path))) {
     drush_die(dt('The directory "!directory" was not found.', ['!directory' => dirname($subtheme_path)]));
