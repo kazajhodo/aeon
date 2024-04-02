@@ -21,7 +21,8 @@
   },
   "autoload": {
     "psr-4": {
-      "Drush\\Commands\\aeon\\": "Commands/aeon/"
+      "Drush\\Commands\\aeon\\": "Commands/aeon/",
+      "Drupal\\aeon\\": "src"
     }
   },
   "extra": {
