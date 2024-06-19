@@ -62,6 +62,13 @@ class PreprocessRegionGroup {
   protected static $count = 0;
 
   /**
+   * The element to preprocess.
+   *
+   * @var array
+   */
+  protected $element;
+
+  /**
    * Class constructor.
    *
    * @param \Drupal\aeon\Utility\Variables $variables
